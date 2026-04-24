@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Analyser</title>
@@ -12,6 +13,20 @@
         <input type="text" name="password" placeholder="Enter a password..." />
         <button type="submit">Analyse</button>
     </form>
+
+    <hr>
+    <h2>Password Generator</h2>
+
+    <form method="POST" action="/generate">
+        <label>Password length:</label>
+        <input type="number" name="length" value="16" min="8" max="64" />
+        <button type="submit">Generate</button>
+    </form>
+
+    {% if generated %}
+        <p>Generated password:</p>
+        <strong>{{ generated }}</strong>
+    {% endif %}
 
     {% if strength %}
         <h2>Result for: {{ password }}</h2>

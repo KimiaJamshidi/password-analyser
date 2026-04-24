@@ -1,3 +1,6 @@
+import secrets
+import string
+
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -49,6 +52,15 @@ def analyse():
         strength = "Weak ❌"
 
     return render_template("index.html", strength=strength, feedback=feedback, password=password)
+
+@app.route("/generate", methods=["POST"])
+def generate():
+    length = int(request.form["length"])
+    
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(secrets.choice(characters) for i in range(length))
+    
+    return render_template("index.html", generated=password)
 
 if __name__ == "__main__":
     app.run(debug=True)
