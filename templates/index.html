@@ -37,6 +37,25 @@
         <p>✅ Not found in any known data breaches</p>
     {% endif %}
 
+    {% if in_dictionary %}
+    <p>📖 <strong>Warning:</strong> This password was found in a common password list — attackers will try this!</p>
+    {% else %}
+        <p>✅ Not found in common password lists</p>
+    {% endif %}
+
+    {% if pattern_warnings %}
+    <div>
+        <p>⚠️ <strong>Pattern warnings:</strong></p>
+        <ul>
+            {% for warning in pattern_warnings %}
+                <li>{{ warning }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+        <p>✅ No common patterns detected</p>
+{% endif %}
+
     {% endif %}
 
     <hr>
@@ -49,9 +68,21 @@
     </form>
 
     {% if generated %}
-        <p>Generated password:</p>
-        <strong>{{ generated }}</strong>
+    <p>Generated password:</p>
+    <strong>{{ generated }}</strong>
+    <p>🔢 Entropy: <strong>{{ entropy }} bits</strong></p>
+    <p>⏱️ Estimated crack time: <strong>{{ crack_time }}</strong></p>
+    {% if pwned_count > 0 %}
+        <p>🚨 <strong>Warning:</strong> Found in <strong>{{ pwned_count }}</strong> data breaches!</p>
+    {% else %}
+        <p>✅ Not found in any known data breaches</p>
     {% endif %}
+    {% if in_dictionary %}
+        <p>📖 <strong>Warning:</strong> Found in common password list!</p>
+    {% else %}
+        <p>✅ Not found in common password lists</p>
+    {% endif %}
+{% endif %}
 
 </body>
 </html>

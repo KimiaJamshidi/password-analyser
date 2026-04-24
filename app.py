@@ -58,8 +58,22 @@ def analyse():
     crack_time = calculate_crack_time(password)
     entropy = calculate_entropy(password)
     pwned_count = check_pwned(password)
+    in_dictionary = check_dictionary(password)
+    pattern_warnings = check_patterns(password)
 
-    return render_template("index.html", strength=strength, feedback=feedback, password=password, crack_time=crack_time, entropy=entropy, score=score, pwned_count=pwned_count)
+    return render_template("index.html", strength=strength, feedback=feedback, password=password, crack_time=crack_time, entropy=entropy, score=score, pwned_count=pwned_count, in_dictionary=in_dictionary, pattern_warnings=pattern_warnings)
+
+# Opens and reads the file and returns True if passowrd was found in the file
+def check_dictionary(password):
+    try:
+        with open("rockyou.txt", "r", encoding="utf-8", errors="ignore") as f:
+            for line in f:
+                if line.strip() == password:
+                    return True
+        return False
+    except FileNotFoundError:
+        return False
+
 
 def check_pwned(password):
     # Hash the password using SHA-1
@@ -80,6 +94,37 @@ def check_pwned(password):
             return int(count)
     
     return 0
+
+#Checks for common patterns and warns the user
+def check_patterns(password):
+    warnings = []
+    
+    # Keyboard walks
+    keyboards = ["qwerty", "asdf", "zxcv", "qazwsx", "123456", "654321"]
+    for pattern in keyboards:
+        if pattern in password.lower():
+            warnings.append("Contains a keyboard pattern")
+            break
+
+    # Repeated characters
+    for i in range(len(password) - 2):
+        if password[i] == password[i+1] == password[i+2]:
+            warnings.append("Contains repeated characters")
+            break
+
+    # Common leet speak
+    leet = ["p@ssw0rd", "h3ll0", "@dmin", "l0gin", "passw0rd"]
+    for pattern in leet:
+        if pattern in password.lower():
+            warnings.append("Contains common leet speak substitution")
+            break
+
+    # Year patterns
+    import re
+    if re.search(r'19\d{2}|20\d{2}', password):
+        warnings.append("Contains a year — easy to guess")
+
+    return warnings
 
 # Function to calculate Entropy score
 def calculate_entropy(password):
@@ -143,7 +188,14 @@ def generate():
     characters = string.ascii_letters + string.digits + string.punctuation
     password = ''.join(secrets.choice(characters) for i in range(length))
     
-    return render_template("index.html", generated=password)
+    # Run all the same analysis on the generated password
+    entropy = calculate_entropy(password)
+    crack_time = calculate_crack_time(password)
+    pwned_count = check_pwned(password)
+    in_dictionary = check_dictionary(password)
+    pattern_warnings = check_patterns(password)
+
+    return render_template("index.html", generated=password, entropy=entropy, crack_time=crack_time, pwned_count=pwned_count, in_dictionary=in_dictionary, pattern_warnings=pattern_warnings)
 
 if __name__ == "__main__":
     app.run(debug=True)
