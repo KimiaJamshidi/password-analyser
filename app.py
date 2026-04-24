@@ -1,6 +1,9 @@
 import secrets
 import string
 import math
+import hashlib
+import requests
+
 
 from flask import Flask, render_template, request
 
@@ -54,9 +57,29 @@ def analyse():
 
     crack_time = calculate_crack_time(password)
     entropy = calculate_entropy(password)
+    pwned_count = check_pwned(password)
 
-    return render_template("index.html", strength=strength, feedback=feedback, password=password, crack_time=crack_time, entropy=entropy)
+    return render_template("index.html", strength=strength, feedback=feedback, password=password, crack_time=crack_time, entropy=entropy, score=score, pwned_count=pwned_count)
 
+def check_pwned(password):
+    # Hash the password using SHA-1
+    sha1 = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+    
+    # Split into first 5 chars and the rest
+    prefix = sha1[:5]
+    suffix = sha1[5:]
+    
+    # Send only the first 5 chars to the API
+    response = requests.get(f"https://api.pwnedpasswords.com/range/{prefix}")
+    
+    # Check if our suffix appears in the response
+    hashes = response.text.splitlines()
+    for line in hashes:
+        hash_suffix, count = line.split(":")
+        if hash_suffix == suffix:
+            return int(count)
+    
+    return 0
 
 # Function to calculate Entropy score
 def calculate_entropy(password):

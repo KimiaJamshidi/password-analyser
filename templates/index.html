@@ -31,8 +31,13 @@
 
     <p>⏱️ Estimated crack time: <strong>{{ crack_time }}</strong></p>
     <p>🔢 Entropy: <strong>{{ entropy }} bits</strong></p>
+    {% if pwned_count > 0 %}
+    <p>🚨 <strong>Warning:</strong> This password has been seen in <strong>{{ pwned_count }}</strong> data breaches — never use it!</p>
+    {% else %}
+        <p>✅ Not found in any known data breaches</p>
+    {% endif %}
 
-{% endif %}
+    {% endif %}
 
     <hr>
     <h2>Password Generator</h2>
