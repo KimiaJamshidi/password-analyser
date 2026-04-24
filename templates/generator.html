@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeCheck — Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-logo">SC</div>
+        <span class="nav-title">SafeCheck</span>
+        <div class="nav-links">
+            <a href="/analyser" class="nav-link">Analyser</a>
+            <a href="/generator" class="nav-link active">Generator</a>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Password Generator</h1>
+        <p>Generate a cryptographically secure password</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <form method="POST" action="/generate">
+                <label class="input-label">Password Length</label>
+                <input type="number" name="length" value="16" min="8" max="64" class="password-input" />
+                <button type="submit" class="btn-primary full-width">Generate</button>
+            </form>
+        </div>
+
+        {% if generated %}
+        <div class="card">
+            <h3>Generated Password</h3>
+            <div class="generated-password">{{ generated }}</div>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Entropy</div>
+                <div class="metric-value">{{ entropy }} bits</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Crack Time</div>
+                <div class="metric-value">{{ crack_time }}</div>
+            </div>
+            <div class="metric-card {% if pwned_count > 0 %}metric-danger{% else %}metric-safe{% endif %}">
+                <div class="metric-label">Data Breaches</div>
+                <div class="metric-value">{% if pwned_count > 0 %}Found {{ pwned_count }} times{% else %}Not found{% endif %}</div>
+            </div>
+            <div class="metric-card {% if in_dictionary %}metric-danger{% else %}metric-safe{% endif %}">
+                <div class="metric-label">Dictionary</div>
+                <div class="metric-value">{% if in_dictionary %}Found{% else %}Not found{% endif %}</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

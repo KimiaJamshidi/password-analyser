@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeCheck — Analyser</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-logo">SC</div>
+        <span class="nav-title">SafeCheck</span>
+        <div class="nav-links">
+            <a href="/analyser" class="nav-link active">Analyser</a>
+            <a href="/generator" class="nav-link">Generator</a>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Password Analyser</h1>
+        <p>Enter a password to see a full security breakdown</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <form method="POST" action="/analyse">
+                <input type="text" name="password" placeholder="Enter a password..." class="password-input" />
+                <p id="live-strength" class="live-strength"></p>
+                <button type="submit" class="btn-primary full-width">Analyse</button>
+            </form>
+        </div>
+
+        {% if strength %}
+        <div class="card">
+            <h2>Results for: <span class="highlight">{{ password }}</span></h2>
+            <div class="strength-badge strength-{{ score }}">{{ strength }}</div>
+
+            {% if feedback %}
+                <div class="feedback-box">
+                    <p class="feedback-title">How to improve:</p>
+                    <ul>
+                        {% for tip in feedback %}
+                            <li>{{ tip }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <p class="all-clear">✅ Your password passed all checks!</p>
+            {% endif %}
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Entropy</div>
+                <div class="metric-value">{{ entropy }} bits</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Crack Time</div>
+                <div class="metric-value">{{ crack_time }}</div>
+            </div>
+            <div class="metric-card {% if pwned_count > 0 %}metric-danger{% else %}metric-safe{% endif %}">
+                <div class="metric-label">Data Breaches</div>
+                <div class="metric-value">{% if pwned_count > 0 %}Found {{ pwned_count }} times{% else %}Not found{% endif %}</div>
+            </div>
+            <div class="metric-card {% if in_dictionary %}metric-danger{% else %}metric-safe{% endif %}">
+                <div class="metric-label">Dictionary</div>
+                <div class="metric-value">{% if in_dictionary %}Found{% else %}Not found{% endif %}</div>
+            </div>
+        </div>
+
+        {% if pattern_warnings %}
+        <div class="card">
+            <h3>⚠️ Pattern Warnings</h3>
+            <div class="tag-row">
+                {% for warning in pattern_warnings %}
+                    <span class="tag tag-warn">{{ warning }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="card">
+            <p class="all-clear">✅ No common patterns detected</p>
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <h3>🔐 Password Hashes</h3>
+            <p class="hash-subtitle">This is how your password would look stored in a database</p>
+            <table class="hash-table">
+                <tr><th>Algorithm</th><th>Hash</th></tr>
+                {% for algorithm, hash in hashes.items() %}
+                <tr>
+                    <td class="algo-name">{{ algorithm }}</td>
+                    <td class="hash-value">{{ hash }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

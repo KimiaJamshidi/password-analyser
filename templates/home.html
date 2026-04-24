@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeCheck</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-logo">SC</div>
+        <span class="nav-title">SafeCheck</span>
+        <div class="nav-links">
+            <a href="/analyser" class="nav-link">Analyser</a>
+            <a href="/generator" class="nav-link">Generator</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Password Security, Simplified</h1>
+        <p>Analyse your passwords, detect breaches, and generate secure ones</p>
+        <div class="hero-buttons">
+            <a href="/analyser" class="btn-primary">Analyse a Password</a>
+            <a href="/generator" class="btn-secondary">Generate a Password</a>
+        </div>
+    </div>
+
+    <div class="features">
+        <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3>Strength Analysis</h3>
+            <p>Score your password against real security criteria including entropy and complexity</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🚨</div>
+            <h3>Breach Detection</h3>
+            <p>Check if your password has appeared in known data breaches using Have I Been Pwned</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔐</div>
+            <h3>Secure Generator</h3>
+            <p>Generate cryptographically secure passwords using Python's secrets module</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Live Feedback</h3>
+            <p>See your password strength update in real time as you type</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
