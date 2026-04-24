@@ -14,6 +14,23 @@
         <button type="submit">Analyse</button>
     </form>
 
+    {% if strength %}
+        <h2>Result for: {{ password }}</h2>
+        <h3>Strength: {{ strength }}</h3>
+        <p>⏱️ Estimated crack time: <strong>{{ crack_time }}</strong></p>
+
+        {% if feedback %}
+            <p>How to improve:</p>
+            <ul>
+                {% for tip in feedback %}
+                    <li>{{ tip }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Your password passed all checks! 🎉</p>
+        {% endif %}
+    {% endif %}
+
     <hr>
     <h2>Password Generator</h2>
 
@@ -26,22 +43,6 @@
     {% if generated %}
         <p>Generated password:</p>
         <strong>{{ generated }}</strong>
-    {% endif %}
-
-    {% if strength %}
-        <h2>Result for: {{ password }}</h2>
-        <h3>Strength: {{ strength }}</h3>
-
-        {% if feedback %}
-            <p>How to improve:</p>
-            <ul>
-                {% for tip in feedback %}
-                    <li>{{ tip }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Your password passed all checks! 🎉</p>
-        {% endif %}
     {% endif %}
 
 </body>

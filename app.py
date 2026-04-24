@@ -51,7 +51,42 @@ def analyse():
     else:
         strength = "Weak ❌"
 
-    return render_template("index.html", strength=strength, feedback=feedback, password=password)
+    crack_time = calculate_crack_time(password)
+
+    return render_template("index.html", strength=strength, feedback=feedback, password=password, crack_time=crack_time)
+
+def calculate_crack_time(password):
+    pool = 0
+    
+    if any(c.islower() for c in password):
+        pool += 26
+    if any(c.isupper() for c in password):
+        pool += 26
+    if any(c.isdigit() for c in password):
+        pool += 10
+    if any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password):
+        pool += 32
+
+    combinations = pool ** len(password)
+    
+    # Assuming GPU can do 10 billion guesses per second (as modern GPU's would)
+    guesses_per_second = 10_000_000_000
+    seconds = combinations / guesses_per_second
+
+    if seconds < 1:
+        return "less than a second ⚡ — extremely vulnerable"
+    elif seconds < 60:
+        return f"{int(seconds)} seconds 😨"
+    elif seconds < 3600:
+        return f"{int(seconds // 60)} minutes 😰"
+    elif seconds < 86400:
+        return f"{int(seconds // 3600)} hours 😅"
+    elif seconds < 31536000:
+        return f"{int(seconds // 86400)} days 👍"
+    elif seconds < 3153600000:
+        return f"{int(seconds // 31536000)} years 💪"
+    else:
+        return "longer than the age of the universe 🔒 — uncrackable"
 
 @app.route("/generate", methods=["POST"])
 def generate():
