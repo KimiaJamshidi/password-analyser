@@ -3,7 +3,7 @@ import string
 import math
 import hashlib
 import requests
-
+import re
 
 from flask import Flask, render_template, request
 
@@ -60,10 +60,12 @@ def analyse():
     pwned_count = check_pwned(password)
     in_dictionary = check_dictionary(password)
     pattern_warnings = check_patterns(password)
+    hashes = get_hashes(password)
 
-    return render_template("index.html", strength=strength, feedback=feedback, password=password, crack_time=crack_time, entropy=entropy, score=score, pwned_count=pwned_count, in_dictionary=in_dictionary, pattern_warnings=pattern_warnings)
+    return render_template("index.html", strength=strength, feedback=feedback, password=password, crack_time=crack_time, entropy=entropy, score=score, pwned_count=pwned_count, in_dictionary=in_dictionary, pattern_warnings=pattern_warnings, hashes=hashes)
 
-# Opens and reads the file and returns True if passowrd was found in the file
+
+# Opens and reads the file and returns True if password was found in the file
 def check_dictionary(password):
     try:
         with open("rockyou.txt", "r", encoding="utf-8", errors="ignore") as f:
@@ -95,7 +97,21 @@ def check_pwned(password):
     
     return 0
 
-#Checks for common patterns and warns the user
+
+# Hash viewer to show how password looks when stored in a database
+def get_hashes(password):
+    md5 = hashlib.md5(password.encode()).hexdigest()
+    sha1 = hashlib.sha1(password.encode()).hexdigest()
+    sha256 = hashlib.sha256(password.encode()).hexdigest()
+    
+    return {
+        "MD5": md5,
+        "SHA-1": sha1,
+        "SHA-256": sha256
+    }
+
+
+# Checks for common patterns and warns the user
 def check_patterns(password):
     warnings = []
     
@@ -120,11 +136,11 @@ def check_patterns(password):
             break
 
     # Year patterns
-    import re
     if re.search(r'19\d{2}|20\d{2}', password):
         warnings.append("Contains a year — easy to guess")
 
     return warnings
+
 
 # Function to calculate Entropy score
 def calculate_entropy(password):
@@ -161,7 +177,7 @@ def calculate_crack_time(password):
 
     combinations = pool ** len(password)
     
-    # Assuming GPU can do 10 billion guesses per second (as modern GPU's would)
+    # Assuming GPU can do 10 billion guesses per second (as modern GPUs would)
     guesses_per_second = 10_000_000_000
     seconds = combinations / guesses_per_second
 
@@ -180,7 +196,8 @@ def calculate_crack_time(password):
     else:
         return "longer than the age of the universe 🔒 — uncrackable"
 
- #Generates random password 
+
+# Generates random password
 @app.route("/generate", methods=["POST"])
 def generate():
     length = int(request.form["length"])
@@ -194,8 +211,10 @@ def generate():
     pwned_count = check_pwned(password)
     in_dictionary = check_dictionary(password)
     pattern_warnings = check_patterns(password)
+    hashes = get_hashes(password)
 
-    return render_template("index.html", generated=password, entropy=entropy, crack_time=crack_time, pwned_count=pwned_count, in_dictionary=in_dictionary, pattern_warnings=pattern_warnings)
+    return render_template("index.html", generated=password, crack_time=crack_time, entropy=entropy, pwned_count=pwned_count, in_dictionary=in_dictionary, pattern_warnings=pattern_warnings, hashes=hashes)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

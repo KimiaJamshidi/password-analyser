@@ -15,46 +15,63 @@
     </form>
 
     {% if strength %}
-    <h2>Result for: {{ password }}</h2>
-    <h3>Strength: {{ strength }}</h3>
+        <h2>Result for: {{ password }}</h2>
+        <h3>Strength: {{ strength }}</h3>
 
-    {% if feedback %}
-        <p>How to improve:</p>
-        <ul>
-            {% for tip in feedback %}
-                <li>{{ tip }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Your password passed all checks! 🎉</p>
-    {% endif %}
+        {% if feedback %}
+            <p>How to improve:</p>
+            <ul>
+                {% for tip in feedback %}
+                    <li>{{ tip }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Your password passed all checks! 🎉</p>
+        {% endif %}
 
-    <p>⏱️ Estimated crack time: <strong>{{ crack_time }}</strong></p>
-    <p>🔢 Entropy: <strong>{{ entropy }} bits</strong></p>
-    {% if pwned_count > 0 %}
-    <p>🚨 <strong>Warning:</strong> This password has been seen in <strong>{{ pwned_count }}</strong> data breaches — never use it!</p>
-    {% else %}
-        <p>✅ Not found in any known data breaches</p>
-    {% endif %}
+        <p>⏱️ Estimated crack time: <strong>{{ crack_time }}</strong></p>
+        <p>🔢 Entropy: <strong>{{ entropy }} bits</strong></p>
 
-    {% if in_dictionary %}
-    <p>📖 <strong>Warning:</strong> This password was found in a common password list — attackers will try this!</p>
-    {% else %}
-        <p>✅ Not found in common password lists</p>
-    {% endif %}
+        {% if pwned_count > 0 %}
+            <p>🚨 <strong>Warning:</strong> This password has been seen in <strong>{{ pwned_count }}</strong> data breaches — never use it!</p>
+        {% else %}
+            <p>✅ Not found in any known data breaches</p>
+        {% endif %}
 
-    {% if pattern_warnings %}
-    <div>
-        <p>⚠️ <strong>Pattern warnings:</strong></p>
-        <ul>
-            {% for warning in pattern_warnings %}
-                <li>{{ warning }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% else %}
-        <p>✅ No common patterns detected</p>
-{% endif %}
+        {% if in_dictionary %}
+            <p>📖 <strong>Warning:</strong> This password was found in a common password list — attackers will try this!</p>
+        {% else %}
+            <p>✅ Not found in common password lists</p>
+        {% endif %}
+
+        {% if pattern_warnings %}
+            <div>
+                <p>⚠️ <strong>Pattern warnings:</strong></p>
+                <ul>
+                    {% for warning in pattern_warnings %}
+                        <li>{{ warning }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <p>✅ No common patterns detected</p>
+        {% endif %}
+
+        <div>
+            <p>🔐 <strong>Password Hashes:</strong></p>
+            <table>
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Hash</th>
+                </tr>
+                {% for algorithm, hash in hashes.items() %}
+                    <tr>
+                        <td>{{ algorithm }}</td>
+                        <td style="font-family: monospace; font-size: 0.8em;">{{ hash }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
 
     {% endif %}
 
@@ -68,21 +85,23 @@
     </form>
 
     {% if generated %}
-    <p>Generated password:</p>
-    <strong>{{ generated }}</strong>
-    <p>🔢 Entropy: <strong>{{ entropy }} bits</strong></p>
-    <p>⏱️ Estimated crack time: <strong>{{ crack_time }}</strong></p>
-    {% if pwned_count > 0 %}
-        <p>🚨 <strong>Warning:</strong> Found in <strong>{{ pwned_count }}</strong> data breaches!</p>
-    {% else %}
-        <p>✅ Not found in any known data breaches</p>
+        <p>Generated password:</p>
+        <strong>{{ generated }}</strong>
+        <p>🔢 Entropy: <strong>{{ entropy }} bits</strong></p>
+        <p>⏱️ Estimated crack time: <strong>{{ crack_time }}</strong></p>
+
+        {% if pwned_count > 0 %}
+            <p>🚨 <strong>Warning:</strong> Found in <strong>{{ pwned_count }}</strong> data breaches!</p>
+        {% else %}
+            <p>✅ Not found in any known data breaches</p>
+        {% endif %}
+
+        {% if in_dictionary %}
+            <p>📖 <strong>Warning:</strong> Found in common password list!</p>
+        {% else %}
+            <p>✅ Not found in common password lists</p>
+        {% endif %}
     {% endif %}
-    {% if in_dictionary %}
-        <p>📖 <strong>Warning:</strong> Found in common password list!</p>
-    {% else %}
-        <p>✅ Not found in common password lists</p>
-    {% endif %}
-{% endif %}
 
 </body>
 </html>
