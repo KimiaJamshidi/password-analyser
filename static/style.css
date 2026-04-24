@@ -60,18 +60,6 @@ nav {
     gap: 8px;
 }
 
-/* Home link in navbar */
-.nav-home {
-    color: #6666aa;
-    font-size: 13px;
-    text-decoration: none;
-    margin-left: 16px;
-    transition: color 0.2s ease;
-}
-
-.nav-home:hover {
-    color: #AFA9EC;
-}
 
 /* ============================================
    NAV PILL TOGGLE
@@ -125,6 +113,7 @@ nav {
     font-weight: 700;
     background: linear-gradient(135deg, #AFA9EC, #378ADD);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 16px;
 }
