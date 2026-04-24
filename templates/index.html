@@ -11,6 +11,7 @@
 
     <form method="POST" action="/analyse">
         <input type="text" name="password" placeholder="Enter a password..." />
+        <p id="live-strength"></p>
         <button type="submit">Analyse</button>
     </form>
 
@@ -103,5 +104,6 @@
         {% endif %}
     {% endif %}
 
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
