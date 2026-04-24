@@ -1,0 +1,603 @@
+/* ============================================
+   GLOBAL RESET
+   Removes default browser spacing and sets
+   box-sizing so padding doesn't affect width
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ============================================
+   BODY
+   Deep navy background, light text, full height
+   ============================================ */
+body {
+    background-color: #080818;
+    color: #e0e0f0;
+    min-height: 100vh;
+}
+
+/* ============================================
+   NAVBAR
+   Fixed top bar with logo, title and nav links
+   Uses flexbox to space items horizontally
+   ============================================ */
+nav {
+    background-color: #0d0d24;
+    border-bottom: 0.5px solid #1e1e3f;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Square logo box with purple-to-blue gradient */
+.nav-logo {
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: 1.5px solid #534AB7;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* App name next to the logo */
+.nav-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e0e0f0;
+}
+
+/* Pushes nav links to the right using margin-left: auto */
+.nav-links {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+}
+
+/* Home link in navbar */
+.nav-home {
+    color: #6666aa;
+    font-size: 13px;
+    text-decoration: none;
+    margin-left: 16px;
+    transition: color 0.2s ease;
+}
+
+.nav-home:hover {
+    color: #AFA9EC;
+}
+
+/* ============================================
+   NAV PILL TOGGLE
+   Small pill in navbar, highlights active page
+   ============================================ */
+.nav-pill {
+    background: #13132a;
+    border: 0.5px solid #2a2a4a;
+    border-radius: 100px;
+    padding: 4px;
+    display: inline-flex;
+    gap: 2px;
+}
+
+.nav-option {
+    padding: 7px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6666aa;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.nav-option:hover {
+    color: #ffffff;
+}
+
+.nav-option.active {
+    background: linear-gradient(135deg, #534AB7, #185FA5);
+    color: #ffffff;
+}
+
+/* ============================================
+   HERO SECTION (home page only)
+   Large centred heading with gradient text
+   and two call-to-action buttons below
+   ============================================ */
+.hero {
+    text-align: center;
+    padding: 80px 32px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Gradient text effect using background-clip trick */
+.hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #AFA9EC, #378ADD);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+}
+
+.hero p {
+    color: #6666aa;
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+
+/* Side by side buttons using flexbox */
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+/* ============================================
+   BUTTONS
+   Two variants — solid primary and outlined secondary
+   Both have hover transitions
+   ============================================ */
+
+/* Solid purple-to-blue gradient button */
+.btn-primary {
+    background: linear-gradient(135deg, #534AB7, #185FA5);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.2s ease;
+}
+
+.btn-primary:hover {
+    opacity: 0.85;
+}
+
+/* Outlined ghost button for secondary actions */
+.btn-secondary {
+    background: transparent;
+    color: #AFA9EC;
+    padding: 12px 28px;
+    border-radius: 8px;
+    border: 0.5px solid #534AB7;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: #13132a;
+}
+
+/* Makes a button stretch full width of its container */
+.full-width {
+    width: 100%;
+    margin-top: 12px;
+}
+
+/* ============================================
+   FEATURE CARDS (home page only)
+   4 column grid of cards explaining the features
+   Each card lifts its border on hover
+   ============================================ */
+.features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 0 32px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: #0d0d24;
+    border: 0.5px solid #1e1e3f;
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s ease;
+}
+
+/* Border glows purple when hovering a feature card */
+.feature-card:hover {
+    border-color: #534AB7;
+}
+
+.feature-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.feature-card h3 {
+    color: #AFA9EC;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    color: #6666aa;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ============================================
+   PAGE HEADER (analyser and generator pages)
+   Title and subtitle at the top of each page
+   ============================================ */
+.page-header {
+    padding: 40px 32px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.page-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #e0e0f0;
+    margin-bottom: 6px;
+}
+
+.page-header p {
+    color: #6666aa;
+    font-size: 15px;
+}
+
+/* ============================================
+   CONTAINER
+   Centres content and stacks cards vertically
+   with a gap between each one
+   ============================================ */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 32px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ============================================
+   CARDS
+   Dark navy boxes with subtle border
+   Used to group related content on each page
+   ============================================ */
+.card {
+    background: #0d0d24;
+    border: 0.5px solid #1e1e3f;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.card h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #e0e0f0;
+    margin-bottom: 16px;
+}
+
+.card h3 {
+    font-size: 15px;
+    font-weight: 500;
+    color: #AFA9EC;
+    margin-bottom: 12px;
+}
+
+/* ============================================
+   PASSWORD INPUT
+   Dark input field with purple focus border
+   ============================================ */
+.password-input {
+    width: 100%;
+    background: #080818;
+    border: 0.5px solid #1e1e3f;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #e0e0f0;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+/* Border turns purple when input is focused */
+.password-input:focus {
+    border-color: #534AB7;
+}
+
+.input-label {
+    display: block;
+    color: #6666aa;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+/* ============================================
+   LIVE STRENGTH INDICATOR
+   Small text that updates as the user types
+   Driven by script.js
+   ============================================ */
+.live-strength {
+    font-size: 13px;
+    color: #AFA9EC;
+    min-height: 20px;
+    margin: 8px 0;
+}
+
+/* ============================================
+   STRENGTH BADGE
+   Coloured pill showing the strength level
+   Colour changes based on score (1-4)
+   ============================================ */
+.strength-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+/* Score 1 — Weak — red */
+.strength-1 { background: #2a0a0a; color: #F09595; border: 0.5px solid #A32D2D; }
+/* Score 2 — Fair — orange */
+.strength-2 { background: #2a1a0a; color: #EF9F27; border: 0.5px solid #854F0B; }
+/* Score 3 — Strong — purple */
+.strength-3 { background: #1a1a2a; color: #AFA9EC; border: 0.5px solid #534AB7; }
+/* Score 4 — Very Strong — green */
+.strength-4 { background: #1a2a1a; color: #97C459; border: 0.5px solid #3B6D11; }
+
+/* ============================================
+   HIGHLIGHT
+   Blue monospace text used to display
+   the analysed password in results
+   ============================================ */
+.highlight {
+    color: #378ADD;
+    font-family: 'Courier New', monospace;
+}
+
+/* ============================================
+   FEEDBACK BOX
+   Dark box listing improvement suggestions
+   Each tip has an arrow prefix
+   ============================================ */
+.feedback-box {
+    background: #080818;
+    border: 0.5px solid #1e1e3f;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.feedback-title {
+    color: #6666aa;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.feedback-box ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Each tip is orange with an arrow using ::before pseudo element */
+.feedback-box li {
+    color: #EF9F27;
+    font-size: 14px;
+    padding-left: 16px;
+    position: relative;
+}
+
+.feedback-box li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #854F0B;
+}
+
+/* Green text for when all checks pass */
+.all-clear {
+    color: #97C459;
+    font-size: 14px;
+}
+
+/* ============================================
+   METRICS GRID
+   2 column grid of stat cards showing
+   entropy, crack time, breaches, dictionary
+   ============================================ */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.metric-card {
+    background: #0d0d24;
+    border: 0.5px solid #1e1e3f;
+    border-radius: 10px;
+    padding: 16px 20px;
+}
+
+/* Label above the value — muted colour */
+.metric-label {
+    color: #6666aa;
+    font-size: 12px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* The actual stat value */
+.metric-value {
+    color: #e0e0f0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Red tint for dangerous results like breach found */
+.metric-danger {
+    border-color: #A32D2D;
+    background: #1a0a0a;
+}
+
+.metric-danger .metric-value {
+    color: #F09595;
+}
+
+/* Green tint for safe results */
+.metric-safe {
+    border-color: #3B6D11;
+    background: #0a1a0a;
+}
+
+.metric-safe .metric-value {
+    color: #97C459;
+}
+
+/* ============================================
+   PATTERN WARNING TAGS
+   Small pills shown when patterns are detected
+   Orange for warnings, green for all clear
+   ============================================ */
+.tag-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.tag-warn {
+    background: #2a1a0a;
+    color: #EF9F27;
+    border: 0.5px solid #854F0B;
+}
+
+.tag-good {
+    background: #1a2a1a;
+    color: #97C459;
+    border: 0.5px solid #3B6D11;
+}
+
+/* ============================================
+   HASH TABLE
+   Displays MD5, SHA-1 and SHA-256 hashes
+   Monospace font for the hash values
+   ============================================ */
+.hash-subtitle {
+    color: #6666aa;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.hash-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.hash-table th {
+    color: #6666aa;
+    text-align: left;
+    padding: 8px 0;
+    border-bottom: 0.5px solid #1e1e3f;
+    font-weight: 500;
+}
+
+.hash-table tr {
+    border-bottom: 0.5px solid #1e1e3f;
+}
+
+.hash-table tr:last-child {
+    border-bottom: none;
+}
+
+/* Algorithm name column — purple */
+.algo-name {
+    color: #AFA9EC;
+    padding: 10px 0;
+    width: 80px;
+}
+
+/* Hash value column — blue monospace */
+.hash-value {
+    color: #378ADD;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    word-break: break-all;
+    padding: 10px 0;
+}
+
+/* ============================================
+   GENERATED PASSWORD DISPLAY
+   Large monospace box showing the
+   generated password result
+   ============================================ */
+.generated-password {
+    background: #080818;
+    border: 0.5px solid #534AB7;
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    color: #AFA9EC;
+    word-break: break-all;
+    letter-spacing: 2px;
+}
+
+/* ============================================
+   HERO PILL TOGGLE
+   Big bubbly pill on the home page
+   Each option navigates to a different page
+   ============================================ */
+.hero-pill {
+    background: #13132a;
+    border: 0.5px solid #2a2a4a;
+    border-radius: 100px;
+    padding: 6px;
+    display: inline-flex;
+    gap: 4px;
+}
+
+.hero-option {
+    padding: 14px 36px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #8888bb;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.hero-option:hover {
+    color: #ffffff;
+    background: #1a1a35;
+}
+
+.hero-option.active {
+    background: linear-gradient(135deg, #534AB7, #185FA5);
+    color: #ffffff;
+}
