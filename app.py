@@ -1,5 +1,6 @@
 import secrets
 import string
+import math
 
 from flask import Flask, render_template, request
 
@@ -52,9 +53,32 @@ def analyse():
         strength = "Weak ❌"
 
     crack_time = calculate_crack_time(password)
+    entropy = calculate_entropy(password)
 
-    return render_template("index.html", strength=strength, feedback=feedback, password=password, crack_time=crack_time)
+    return render_template("index.html", strength=strength, feedback=feedback, password=password, crack_time=crack_time, entropy=entropy)
 
+
+# Function to calculate Entropy score
+def calculate_entropy(password):
+    pool = 0
+    
+    if any(c.islower() for c in password):
+        pool += 26
+    if any(c.isupper() for c in password):
+        pool += 26
+    if any(c.isdigit() for c in password):
+        pool += 10
+    if any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password):
+        pool += 32
+
+    if pool == 0:
+        return 0
+        
+    entropy = len(password) * math.log2(pool)
+    return round(entropy, 1)
+
+
+# Function to calculate how long it takes for the password to be cracked
 def calculate_crack_time(password):
     pool = 0
     
@@ -88,6 +112,7 @@ def calculate_crack_time(password):
     else:
         return "longer than the age of the universe 🔒 — uncrackable"
 
+ #Generates random password 
 @app.route("/generate", methods=["POST"])
 def generate():
     length = int(request.form["length"])
